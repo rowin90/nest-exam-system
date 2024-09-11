@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, StreamableFile } from '@nestjs/common';
 import { RedisService } from '@app/redis';
 import { PrismaService } from '@app/prisma';
 import { Prisma } from '@prisma/client';
@@ -14,7 +14,6 @@ export class UserService {
     const keys = await this.redisService.keys('*');
     return 'Hello World!' + keys;
   }
-
   async create(data: Prisma.UserCreateInput) {
     return await this.prisma.user.create({
       data,
