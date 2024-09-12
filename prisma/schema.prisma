@@ -6,6 +6,17 @@
 
 generator client {
   provider = "prisma-client-js"
+  // output   = "../generated/client"  // 默认代码生成在 node_module中
+}
+
+generator docs {
+  provider = "node node_modules/prisma-docs-generator"
+  output   = "../generated/docs"
+}
+
+generator json {
+  provider = "prisma-json-schema-generator"
+  output   = "../generated/json"
 }
 
 datasource db {
@@ -14,43 +25,42 @@ datasource db {
 }
 
 model User {
-  id  Int @id @default(autoincrement())
-  username String @db.VarChar(50) @unique
-  password String @db.VarChar(50)
-  email String @db.VarChar(50)
+  id         Int      @id @default(autoincrement())
+  username   String   @unique @db.VarChar(50)
+  password   String   @db.VarChar(50)
+  email      String   @db.VarChar(50)
   createTime DateTime @default(now())
   updateTime DateTime @updatedAt
 
-  exams  Exam[]
+  exams   Exam[]
   answers Answer[]
 }
 
 model Exam {
-  id  Int @id @default(autoincrement())
-  name String @db.VarChar(50)
-  isPublish Boolean @default(false)
-  isDelete Boolean @default(false)
-  content String @db.Text
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(50)
+  isPublish  Boolean  @default(false)
+  isDelete   Boolean  @default(false)
+  content    String   @db.Text
   createTime DateTime @default(now())
   updateTime DateTime @updatedAt
 
   createUserId Int
-  createUser     User  @relation(fields: [createUserId], references: [id])
+  createUser   User @relation(fields: [createUserId], references: [id])
 
   answers Answer[]
 }
 
-
 model Answer {
-  id  Int @id @default(autoincrement())
-  content String @db.Text
-  score Int
+  id         Int      @id @default(autoincrement())
+  content    String   @db.Text
+  score      Int
   createTime DateTime @default(now())
   updateTime DateTime @updatedAt
 
   answererId Int
-  answerer     User  @relation(fields: [answererId], references: [id])
+  answerer   User @relation(fields: [answererId], references: [id])
 
   examId Int
-  exam     Exam  @relation(fields: [examId], references: [id])
+  exam   Exam @relation(fields: [examId], references: [id])
 }
