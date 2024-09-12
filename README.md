@@ -17,6 +17,11 @@ generator json {
 ```
 4. 文件可读流接口返回
 ```js
+import { 
+  StreamableFile,
+} from '@nestjs/common';
+
+
  async getTxt() {
     const filePath = join(__dirname, '1.txt'); // 替换为你的文件路径
     const fileStream = createReadStream(filePath);
